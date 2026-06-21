@@ -18,10 +18,13 @@ UNITS_WH = [
     [11, 13]
 ]
 
+# Big-M
 M = 10000
 
+# Definition of model
 model = pp.model('Simple SPP')
 
+# Definion of decision variables
 xi = [model.var(f'x{i}', kind=float, bounds=(0, None)) for i in range(len(UNITS_WH))]
 yi = [model.var(f'y{i}', kind=float, bounds=(0, None)) for i in range(len(UNITS_WH))]
 lij = [[model.var(f'l{i}_{j}', kind=int, bounds=(0, 1)) for j in range(len(UNITS_WH))] for i in range(len(UNITS_WH))]
@@ -30,8 +33,10 @@ bij = [[model.var(f'b{i}_{j}', kind=int, bounds=(0, 1)) for j in range(len(UNITS
 aij = [[model.var(f'a{i}_{j}', kind=int, bounds=(0, 1)) for j in range(len(UNITS_WH))] for i in range(len(UNITS_WH))]
 H = model.var('H', kind=float, bounds=(0, None))
 
+# definicion of objective function
 model.minimize(H)
 
+# Definition of constraints
 for i in range(len(UNITS_WH)):
     xi[i] + UNITS_WH[i][0] <= CHIP_WIDTH
     yi[i] + UNITS_WH[i][1] <= H
@@ -43,7 +48,10 @@ for i in range(len(UNITS_WH)):
         yi[j] + UNITS_WH[j][1] <= yi[i] + M * (1 - aij[i][j])
         lij[i][j] + rij[i][j] + bij[i][j] + aij[i][j] == 1
 
+# Solve the problem
 model.solve()
+
+# Extract and print results
 for i in range(len(UNITS_WH)):
     print(f"Unit {i}: x = {xi[i].primal:.2f}, y = {yi[i].primal:.2f}")
 
@@ -52,4 +60,6 @@ y = [yi[i].primal for i in range(len(UNITS_WH))]
 w = [UNITS_WH[i][0] for i in range(len(UNITS_WH))]
 h = [UNITS_WH[i][1] for i in range(len(UNITS_WH))]
 H_val = H.primal
+
+# Plot results
 u.plot_packing(x, y, w, h, CHIP_WIDTH, H_val)

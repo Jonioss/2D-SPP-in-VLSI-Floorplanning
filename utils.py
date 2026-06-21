@@ -37,7 +37,7 @@ def plot_packing(x, y, w, h, chip_width, H):
     plt.show()
 
 def plot_packing_full(x, y, w, h, chip_width, H,
-                 nets=None, units_wh=None, roti=None):
+                 nets=None, units_wh=None, roti=None, labels=None):
     """
     Plot strip packing result.  When nets/units_wh/roti are supplied the
     function also draws pins and wires so you can see how well the
@@ -77,7 +77,7 @@ def plot_packing_full(x, y, w, h, chip_width, H,
             alpha=0.75, linewidth=1.5
         ))
         ax.text(
-            x[i] + w[i] / 2, y[i] + h[i] / 2, f"R{i}",
+            x[i] + w[i] / 2, y[i] + h[i] / 2, f"{labels[i]}" if labels else f"Block {i}",
             ha='center', va='center',
             fontsize=9, fontweight='bold', color='#1a252f'
         )
