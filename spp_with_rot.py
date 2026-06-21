@@ -22,6 +22,7 @@ M = 1000
 
 model = pp.model('Simple SPP')
 
+# Variables for unit positions and dimensions
 xi = [model.var(f'x{i}', kind=float, bounds=(0, None)) for i in range(len(UNITS_WH))]
 yi = [model.var(f'y{i}', kind=float, bounds=(0, None)) for i in range(len(UNITS_WH))]
 lij = [[model.var(f'l{i}_{j}', kind=int, bounds=(0, 1)) for j in range(len(UNITS_WH))] for i in range(len(UNITS_WH))]
@@ -30,10 +31,13 @@ bij = [[model.var(f'b{i}_{j}', kind=int, bounds=(0, 1)) for j in range(len(UNITS
 aij = [[model.var(f'a{i}_{j}', kind=int, bounds=(0, 1)) for j in range(len(UNITS_WH))] for i in range(len(UNITS_WH))]
 H = model.var('H', kind=float, bounds=(0, None))
 
+# Variables for rotation of units
 roti = [model.var(f'rot{i}', kind=int, bounds=(0, 1)) for i in range(len(UNITS_WH))]
 
+# Definition of objective func
 model.minimize(H)
 
+# Constrains for SPP with rotation
 for i in range(len(UNITS_WH)):
     weffi = UNITS_WH[i][0] * (1 - roti[i]) + UNITS_WH[i][1] * roti[i]
     heffi = UNITS_WH[i][1] * (1 - roti[i]) + UNITS_WH[i][0] * roti[i]
@@ -52,7 +56,10 @@ for i in range(len(UNITS_WH)):
         yi[j] + heffj <= yi[i] + M * (1 - aij[i][j])
         lij[i][j] + rij[i][j] + bij[i][j] + aij[i][j] == 1
 
+# Solve the model
 model.solve()
+
+# Extract results and print
 for i in range(len(UNITS_WH)):
     print(f"Unit {i}: x = {xi[i].primal:.2f}, y = {yi[i].primal:.2f}")
 
@@ -62,6 +69,7 @@ w = [UNITS_WH[i][0] for i in range(len(UNITS_WH))]
 h = [UNITS_WH[i][1] for i in range(len(UNITS_WH))]
 H_val = H.primal
 
+# For plotting; see utils.py > plot_packing()
 w_plot = []
 h_plot = []
 for i in range(len(UNITS_WH)):
