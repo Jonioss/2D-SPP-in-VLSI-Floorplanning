@@ -1,4 +1,4 @@
-# Joint Area and Wirelength Optimization for VLSI Strip Packing
+# Joint Area and Wirelength Optimization for VLSI Strip Packing Problem
 
 A linear programming approach to the VLSI *Strip Packing Problem* that jointly minimizes chip area and *Half-Perimeter Wirelength* (HPWL), with support for block rotation. Modeled and solved in Python with **Pymprog** (GLPK) and visualized with **Matplotlib**.
 
@@ -44,7 +44,7 @@ The subject of this project is the study of the *Strip Packing Problem* (SPP) in
 
 ### Motivation
 
-This study is of genuine interest in the field of integrated circuit design in industry, since all modern software that performs placement of units on chips (e.g. *Innovus*, *Xilinx Vivado*) seeks the most efficient organization possible, in order to minimize wiring and chip area — maximizing the circuit's performance and operating frequency, as well as the ease of its manufacturing in the fab.
+This study is of genuine interest in the field of integrated circuit design in industry, since all modern software that performs placement of units on chips (e.g. *Innovus*, *Vivado*) seeks the most efficient organization possible, in order to minimize wiring and chip area — maximizing the circuit's performance and operating frequency, as well as the ease of its manufacturing in the fab.
 
 ### Methodological Approach
 
@@ -266,7 +266,7 @@ def plot_packing(x, y, w, h, chip_width, H):
 
 And the resulting plot:
 
-[Add basic strip-packing plot here]
+<img width="800" height="600" alt="image" src="https://github.com/user-attachments/assets/758579ce-151a-44b4-b99f-10b01186906a" />
 
 ---
 
@@ -379,7 +379,7 @@ u.plot_packing(x, y, w_plot, h_plot, CHIP_WIDTH, H_val)
 
 We can again visualize the results as we did in the previous section — we just need to be careful, when extracting the data, to also account for the possible rotation of each block in the final result.
 
-[Add rotated strip-packing plot here]
+<img width="800" height="600" alt="image" src="https://github.com/user-attachments/assets/d7cc350c-54ff-4093-8252-a9b85c7316fb" />
 
 ---
 
@@ -724,7 +724,7 @@ u.plot_packing_full(
 
 And the resulting output, visualized:
 
-[Add HPWL wirelength plot here]
+<img width="1000" height="700" alt="image" src="https://github.com/user-attachments/assets/50b89826-39aa-4489-98a2-0d647b2de7d0" />
 
 In the image above, the randomly chosen pins on the blocks are shown together with the interconnection wires. We observe that the placement of Block 4 has clearly been influenced so that the brown wire lies in a straight line — that is, its pin is at the smallest possible distance from the pin of Block 5, and that one from the pin of Block 6.
 
@@ -734,7 +734,7 @@ In the image above, the randomly chosen pins on the blocks are shown together wi
 
 It is now time to apply the above to a real-world application: the ALU circuit.
 
-[Add ALU circuit diagram here]
+<img width="708" height="710" alt="image" src="https://github.com/user-attachments/assets/79ef4f19-3270-4cbe-858a-fd9577f76b7a" />
 
 In the circuit above, two 8-bit inputs, $A$ and $B$, are fed into 8 units — 4 for logical operations and 4 for arithmetic operations. The 8-bit output of each unit is carried to the **multiplexer**, which uses the 3-bit input $C$ to select which operation's result is passed to the output.
 
@@ -979,11 +979,11 @@ u.plot_packing_full(
 
 The following results are then obtained:
 
-[Add ALU placement W=100 here]
+<img width="1000" height="700" alt="image" src="https://github.com/user-attachments/assets/197c1b2e-9780-4847-a171-0b538f8c104b" />
 
 If we now pose a more demanding problem — placing the same chip at $W = 60$, this time fixing the *MOD* block, the largest unit, at the bottom-left of the chip ourselves (to reduce the very large number of operations the program has to perform), and letting it run for a considerable amount of time (~18,127.5 seconds, or **5 hours**) — a nicer result is obtained, one that highlights the strength of the algorithm:
 
-[Add ALU placement W=60 here]
+<img width="1000" height="700" alt="image" src="https://github.com/user-attachments/assets/dd5635cb-7e3e-4b48-bdbb-71f6dc41bc16" />
 
 ---
 
